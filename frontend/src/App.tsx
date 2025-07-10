@@ -12,6 +12,7 @@ const App = () => {
   const [formErrors, setFormErrors] = useState<any>({});
   const [apiError, setApiError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -44,7 +45,11 @@ const App = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    setApiError('');
+    setSuccessMessage('');
     setSubmitting(true);
+
     console.log('Form submitted: ', formData);
     console.log('editing mode: ', editingUser ? 'update' : 'create'); // see post or put 
 
@@ -72,6 +77,8 @@ const App = () => {
 
         // clear form data
         setFormData({ name: '', surname: '', email: '', company: '', jobTitle: '' });
+        setSuccessMessage("User successfully updated");
+        setTimeout(() => setSuccessMessage(''), 3000);
       }
       else {
         const newUser = await userService.createUser(formData);
@@ -82,6 +89,8 @@ const App = () => {
 
         // clear form
         setFormData({ name: '', surname: '', email: '', company: '', jobTitle: '' });
+        setSuccessMessage("user successfully created");
+        setTimeout(() => setSuccessMessage(''), 3000);
       }
 
 
@@ -258,6 +267,14 @@ const App = () => {
               {apiError}
             </div>
             )}
+            
+            { successMessage && (
+            <div
+            style={{color: 'red', fontSize: '12px', border: '1px solid green'}}>
+            {successMessage}
+            </div>)
+            }
+
             
             <div style={{ display: 'flex', gap: '10px' }}>
               <button type="submit"
