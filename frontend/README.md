@@ -1,5 +1,42 @@
 # Rsbuild project
 
+
+```
+
+
+
+function → const
+(props) → = (props) =>
+
+function UserCard(props) {
+    return <div>{props.name}</div>;
+}
+
+
+
+const UserCard = (props) => {
+    return <div> {props.name} </div>;
+}
+
+
+userState: stores data that can change | "remember this data"
+
+userEffect: runs cade at specific time | do this action when something happens
+
+function handleClick() {
+  setCount(count + 1);
+}
+
+onClick={handleClick}
+
+onClick={() => setCount(count+1)}
+
+
+```
+
+
+
+
 ## Setup
 
 Install the dependencies:

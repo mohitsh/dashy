@@ -20,3 +20,9 @@ export interface UserCreate {
 export interface UserUpdate extends UserCreate{
     uuid: string;
 }
+
+export interface UserCardProps{
+    name: string;
+    email: string;
+    company: string;
+}

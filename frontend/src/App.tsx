@@ -2,6 +2,64 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { userService } from './services/userService';
 import { validateUserForm } from './utils/formValidation';
+import {UserCardProps} from './types';
+
+
+// const UserCard = ({name, email, company}: UserCardProps) => {
+//   return (
+//     <div>
+//       <h1> {name} </h1>
+//       <h2> {email} </h2>
+//       <h3> {company} </h3>
+//     </div>
+//   );
+// };
+
+// const App = () => {
+//   const [count, setCount] = useState(0);
+//   const [newUserName, setNewUserName] = useState("");
+
+//   useEffect(() => {
+//     console.log("Length: ", newUserName.length);
+//   },[newUserName]);
+
+  // const [users, setUsers] = useState<UserCardProps[]>([]);
+  // const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setUsers([
+  //       { name: "John", email: "john@mail.com", company: "ABC" },
+  //       { name: "Jane", email: "jane@mail.com", company: "XYZ" }
+  //     ]);
+  //   setLoading(false);
+  //   }, 2000);
+  // },[])
+
+//   return (
+//     <div>
+//       <h1>Testing UserCard</h1>
+//       <UserCard 
+//         name = "tega"
+//         email = "brdige@mail.com"
+//         company= "databridge"
+//       />
+
+//       <h2>Count: {count}</h2>
+//       <button style={{marginRight: '8px'}} onClick={() => setCount(count+1)}>Submit</button>
+      
+//       <input
+//       value={newUserName}
+//       onChange={(e) => setNewUserName(e.target.value)}
+//       placeholder='Type here'
+//       ></input>
+
+//       <button style={{margin: '8px'}} onClick={()=>setNewUserName("")}>Clear</button>
+
+//     </div>
+//   )
+
+// }
 
 const App = () => {
   const [users, setUsers] = useState<any[]>([]);
@@ -109,7 +167,6 @@ const App = () => {
       setFormErrors({ ...formErrors, [e.target.name]: '' });
     }
   };
-
 
   return (
     <div className="App">
