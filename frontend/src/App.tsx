@@ -160,6 +160,7 @@ const App = () => {
     });
   };
 
+  // controlled forms
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     // clear error when user starts typing
