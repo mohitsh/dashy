@@ -2,64 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { userService } from './services/userService';
 import { validateUserForm } from './utils/formValidation';
-import {UserCardProps} from './types';
 
-
-// const UserCard = ({name, email, company}: UserCardProps) => {
-//   return (
-//     <div>
-//       <h1> {name} </h1>
-//       <h2> {email} </h2>
-//       <h3> {company} </h3>
-//     </div>
-//   );
-// };
-
-// const App = () => {
-//   const [count, setCount] = useState(0);
-//   const [newUserName, setNewUserName] = useState("");
-
-//   useEffect(() => {
-//     console.log("Length: ", newUserName.length);
-//   },[newUserName]);
-
-  // const [users, setUsers] = useState<UserCardProps[]>([]);
-  // const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setUsers([
-  //       { name: "John", email: "john@mail.com", company: "ABC" },
-  //       { name: "Jane", email: "jane@mail.com", company: "XYZ" }
-  //     ]);
-  //   setLoading(false);
-  //   }, 2000);
-  // },[])
-
-//   return (
-//     <div>
-//       <h1>Testing UserCard</h1>
-//       <UserCard 
-//         name = "tega"
-//         email = "brdige@mail.com"
-//         company= "databridge"
-//       />
-
-//       <h2>Count: {count}</h2>
-//       <button style={{marginRight: '8px'}} onClick={() => setCount(count+1)}>Submit</button>
-      
-//       <input
-//       value={newUserName}
-//       onChange={(e) => setNewUserName(e.target.value)}
-//       placeholder='Type here'
-//       ></input>
-
-//       <button style={{margin: '8px'}} onClick={()=>setNewUserName("")}>Clear</button>
-
-//     </div>
-//   )
-
-// }
 
 const App = () => {
   const [users, setUsers] = useState<any[]>([]);
@@ -67,6 +10,8 @@ const App = () => {
   const [error, setError] = useState('');
   const [editingUser, setEditingUser] = useState<any>(null);
   const [formErrors, setFormErrors] = useState<any>({});
+  const [apiError, setApiError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -99,6 +44,7 @@ const App = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitting(true);
     console.log('Form submitted: ', formData);
     console.log('editing mode: ', editingUser ? 'update' : 'create'); // see post or put 
 
@@ -109,7 +55,7 @@ const App = () => {
       console.log('Form validation failed');
       return;
     }
-
+    console.log('form validation is successful');
     try {
       if (editingUser) {
         // PUT request
@@ -139,12 +85,25 @@ const App = () => {
       }
 
 
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to create user: ', err);
-      alert('Failed to create user!');
-    }
-  };
+      
+      // reset state: 
+      setApiError('Test Error');
 
+      if (!err.response){
+        setApiError("Network connection issue. Check your network or try again later.");
+      } else if (err.response?.status >= 500){
+        setApiError("Interval server error.");
+      } else if ( err.response?.status === 400){
+        setApiError("Invalid data. Please check your inputs");
+      } else {
+        setApiError("something went wrong. Plese try again later. ");
+      }
+  } finally{
+    setSubmitting(true);
+  }
+};
 
   const handleEdit = (user: any) => {
     console.log('Editing user: ', user);
@@ -294,11 +253,18 @@ const App = () => {
               {formErrors.jobTitle && <div style={{ color: 'red', fontSize: '12px' }}>{formErrors.jobTitle}</div>}
             </div>
 
+            {apiError && 
+            (<div style={{color: 'red', fontSize: '12px', border: '1px solid red'}}>
+              {apiError}
+            </div>
+            )}
+            
             <div style={{ display: 'flex', gap: '10px' }}>
               <button type="submit"
+                disabled={submitting}
                 aria-label={editingUser ? `Update user ${editingUser.name}` : 'Add new user'}
                 style={{ padding: '10px 20px' }}>
-                {editingUser ? 'Update User' : 'Add User'}
+                {submitting ? 'Saving....' : (editingUser ? 'Update User' : 'Add User')}
               </button>
 
               {editingUser && (
